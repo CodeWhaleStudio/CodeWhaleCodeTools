@@ -25,3 +25,4 @@ rootProject.name = "CodeWhaleCodeCompiler"
 include(":app")
 include(":compiler-sass")
 include(":compiler-core")
+include(":compiler-java")

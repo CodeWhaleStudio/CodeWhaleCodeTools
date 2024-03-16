@@ -1,3 +1,3 @@
 package com.bluewhaleyt.codewhale.code.compiler.core
 
-abstract class CompilerOptions
+abstract class CompileOptions

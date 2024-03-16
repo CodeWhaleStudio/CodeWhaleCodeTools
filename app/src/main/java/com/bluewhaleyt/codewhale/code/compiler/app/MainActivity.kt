@@ -13,7 +13,7 @@ import androidx.activity.compose.setContent
 import androidx.core.app.ActivityCompat
 import com.bluewhaleyt.codewhale.code.compiler.app.ui.theme.CodeWhaleCodeCompilerTheme
 
-val ROOT_DIR = Environment.getExternalStorageDirectory().absolutePath + "/CodeWhaleCodeTools"
+val ROOT_DIR = Environment.getExternalStorageDirectory().absolutePath + "/CodeWhaleCodeCompiler"
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

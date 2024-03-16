@@ -61,4 +61,5 @@ dependencies {
 
     implementation(project(":compiler-core"))
     implementation(project(":compiler-sass"))
+    implementation(project(":compiler-java"))
 }

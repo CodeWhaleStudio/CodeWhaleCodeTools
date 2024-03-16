@@ -1,7 +1,6 @@
 package com.bluewhaleyt.codewhale.code.compiler.sass
 
 import android.content.Context
-import android.util.Log
 import com.bluewhaleyt.codewhale.code.compiler.core.CompileReporter
 import com.bluewhaleyt.codewhale.code.compiler.core.Compiler
 import de.larsgrefer.sass.embedded.SassCompiler
@@ -10,13 +9,12 @@ import de.larsgrefer.sass.embedded.android.AndroidSassCompilerFactory
 class SassCompiler(
     private val context: Context,
     override val reporter: CompileReporter,
-    val options: SassCompilerOptions,
-) : Compiler<SassCompilerOptions>(reporter, options) {
+    val options: SassCompileOptions,
+) : Compiler<SassCompileOptions>(reporter, options) {
 
     private val compiler = AndroidSassCompilerFactory.bundled(context)
 
-    override fun compile(): SassCompilationResult {
-        reporter.reportInfo("Running compiler powered by ${SassCompiler::class.java.name}...")
+    override suspend fun compile(): SassCompilationResult {
         val compilationResult = SassCompilationResult()
         try {
             if (options.file.isFile) {

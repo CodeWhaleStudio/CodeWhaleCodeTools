@@ -43,20 +43,20 @@ import kotlinx.coroutines.launch
 fun CompileScreen(
     title: String,
     reporterText: String,
-    source: String,
+    compilationResult: CompilationResult,
     onCompile: () -> Unit,
-    compilationResult: CompilationResult
 ) {
     val pagerState = rememberPagerState(
-        pageCount = { 3 }
+        pageCount = { 2 }
     )
     var selectedTabIndex by remember { mutableStateOf(0) }
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(key1 = compilationResult.error) {
         compilationResult.error?.let {
-            selectedTabIndex = 3
-            pagerState.animateScrollToPage(3)
+            delay(1000L)
+            selectedTabIndex = 1
+            pagerState.animateScrollToPage(1)
         }
     }
     
@@ -86,9 +86,8 @@ fun CompileScreen(
                     }
                 ) {
                     val text = when (i) {
-                        0 -> "Code"
-                        1 -> "Output"
-                        2 -> "Error"
+                        0 -> "Output"
+                        1 -> "Error"
                         else -> ""
                     }
                     Text(text = text)
@@ -106,26 +105,12 @@ fun CompileScreen(
                 when (pageIndex) {
                     0 -> {
                         CodeText(
-                            text = source
-                        )
-                    }
-                    1 -> {
-                        CodeText(
                             modifier = Modifier.weight(1f),
                             text = reporterText
                         ).takeIf { reporterText.isNotEmpty() }
-//                        AnimatedVisibility(visible = reporterText.isNotEmpty()) {
-//                            Text(
-//                                modifier = Modifier.weight(1f),
-//                                text = compilationResult.toString()
-//                            )
-//                        }
                     }
-                    2 -> {
+                    1 -> {
                         compilationResult.error?.let {
-                            it.message?.let {
-                                Text(text = it.substringBefore("."))
-                            }
                             CodeText(
                                 text = it.stackTraceToString(),
                                 color = MaterialTheme.colorScheme.error
