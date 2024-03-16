@@ -14,7 +14,7 @@ import javax.tools.JavaFileObject
 import javax.tools.SimpleJavaFileObject
 import javax.tools.StandardLocation
 
-internal class JavaCompileTask(
+class JavaCompileTask(
     val project: JavaProject,
     val options: JavaCompileOptions
 ) : Task {
@@ -30,16 +30,16 @@ internal class JavaCompileTask(
         } catch (e: Exception) {
             reporter.reportWarning(e.stackTraceToString())
         }
-        val javaFiles = project.sourceFiles
+        val javaFiles = project.getSourceFiles(project.srcDir, "java")
         if (javaFiles.isEmpty()) {
             reporter.reportInfo("No Java files found. Skipping compilation.")
             return
         }
         if (options.sourceVersion != options.targetVersion) {
             reporter.reportWarning("Source version and Target version are different.")
-            reporter.reportInfo("Compiling with Java version ${options.sourceVersion} (Source version: ${options.sourceVersion}, Target version: ${options.targetVersion})")
+            reporter.reportInfo("Compiling with Java version ${options.sourceVersion} (Source version: ${options.sourceVersion}, Target version: ${options.targetVersion})...")
         } else {
-            reporter.reportInfo("Compiling with Java version ${options.sourceVersion}")
+            reporter.reportInfo("Compiling with Java version ${options.sourceVersion}...")
         }
         val size = javaFiles.size
         reporter.reportInfo("Compiling $size Java ${if (size == 1) "file" else "files"}...")

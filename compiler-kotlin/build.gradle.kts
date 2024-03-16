@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.bluewhaleyt.codewhale.code.compiler.java"
+    namespace = "com.bluewhaleyt.codewhale.code.compiler.kotlin"
     compileSdk = 34
 
     defaultConfig {
@@ -36,10 +36,14 @@ dependencies {
     implementation(libs.bundles.core)
 
     implementation(project(":compiler-core"))
+    implementation(project(":compiler-java"))
 
     implementation("io.github.itsaky:nb-javac-android:17.0.0.3")
     implementation("com.google.guava:guava:33.0.0-jre")
     implementation("com.squareup:javapoet:1.13.0")
     implementation("com.android.tools.smali:smali-dexlib2:3.0.5")
     compileOnly("com.android.tools:r8:8.2.47")
+
+    implementation("com.github.Cosmic-Ide.kotlinc-android:kotlinc:2a0a6a7291")
+    implementation("com.squareup:kotlinpoet:1.15.3")
 }

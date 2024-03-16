@@ -1,16 +1,25 @@
 package com.bluewhaleyt.codewhale.code.compiler.java
 
 import android.content.Context
+import com.bluewhaleyt.codewhale.code.compiler.core.Language
 import com.bluewhaleyt.codewhale.code.compiler.core.Project
 import java.io.File
 
-data class JavaProject(
-    var dataDir: File,
+open class JavaProject(
+    open var dataDir: File,
     override var projectDir: File,
-) : Project(projectDir) {
+    override var language: Language = Language.Java
+) : Project(projectDir, language) {
 
-    val srcDir
+//    val srcDir
+//        get() = when (language) {
+//            Language.Java -> File(projectDir, "src/main/java")
+//            Language.Kotlin -> File(projectDir, "src/main/kotlin")
+//            else -> throw IllegalStateException("Unsupported language: $language")
+//        }
+    open val srcDir
         get() = File(projectDir, "src/main/java")
+
     val buildDir
         get() = File(projectDir, "build")
     val cacheDir
@@ -37,11 +46,6 @@ data class JavaProject(
             field = value
         }
 
-    val sourceFiles
-        get() = srcDir.walkTopDown()
-            .filter { it.isFile && it.extension.lowercase() == "java" }
-            .toList()
-
     val classpath: List<File>
         get() {
             val classpath = mutableListOf(File(binDir, "classes"))
@@ -59,5 +63,11 @@ data class JavaProject(
             .filter { it.extension == "class" }
             .map { it.toPath() }
             .toList()
+
+    fun getSourceFiles(dir: File, extension: String): List<File> {
+        return dir.walkTopDown()
+            .filter { it.isFile && it.extension == extension }
+            .toList()
+    }
 
 }

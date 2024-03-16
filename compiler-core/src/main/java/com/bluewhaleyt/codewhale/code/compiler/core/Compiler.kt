@@ -11,7 +11,7 @@ abstract class Compiler<T>(
 
     open suspend fun compile(): CompilationResult? = null
 
-    protected inline fun <reified T : Task> compileTask(message: String) {
+    inline fun <reified T : Task> compileTask(message: String) {
         val task = CompilerCache.getCache<T>()
 
         with(reporter) {

@@ -8,7 +8,7 @@ import com.bluewhaleyt.codewhale.code.compiler.core.Task
 import com.bluewhaleyt.codewhale.code.compiler.java.JavaCompileOptions
 import com.bluewhaleyt.codewhale.code.compiler.java.JavaProject
 
-internal class D8Task(
+class D8Task(
     val project: JavaProject,
     val options: JavaCompileOptions
 ) : Task {

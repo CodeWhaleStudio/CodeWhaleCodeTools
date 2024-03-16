@@ -8,7 +8,7 @@ import java.io.File
 import java.util.jar.JarOutputStream
 import java.util.zip.ZipEntry
 
-internal class JarTask(
+class JarTask(
     val project: JavaProject,
     val options: JavaCompileOptions
 ) : Task {
@@ -29,7 +29,7 @@ internal class JarTask(
                         input.copyTo(jar)
                     }
                     jar.closeEntry()
-                    reporter.reportInfo("JAR file created: ${jarFile.absolutePath}")
+                    reporter.reportInfo("JAR file created: ${jarFile.absolutePath} for ${classFile.name}")
                 }
         }
     }

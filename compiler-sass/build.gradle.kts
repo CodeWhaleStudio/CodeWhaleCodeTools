@@ -33,9 +33,6 @@ android {
 }
 
 dependencies {
-    testImplementation(libs.bundles.test)
-    androidTestImplementation(libs.bundles.test)
-
     implementation(project(":compiler-core"))
 
     implementation("de.larsgrefer.sass:sass-embedded-android:3.6.0")

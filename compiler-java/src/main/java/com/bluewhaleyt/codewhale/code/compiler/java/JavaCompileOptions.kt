@@ -5,10 +5,10 @@ import com.android.tools.r8.CompilationMode
 import com.bluewhaleyt.codewhale.code.compiler.core.CompileOptions
 import java.io.InputStream
 
-data class JavaCompileOptions(
+open class JavaCompileOptions(
     val sourceVersion: String = "8",
     val targetVersion: String = sourceVersion,
-    val releaseJar: Boolean = false,
+    var generateJar: Boolean = false,
     val flags: String? = null,
     val minApiLevel: Int = Build.VERSION_CODES.O,
     val mode: CompilationMode = CompilationMode.DEBUG,

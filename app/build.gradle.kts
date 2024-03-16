@@ -59,7 +59,10 @@ dependencies {
     androidTestImplementation(libs.bundles.test)
     debugImplementation("com.github.CodeWhaleOfficial:CrashWhale:1.0.0")
 
+    implementation("com.android.tools:r8:8.2.47")
+
     implementation(project(":compiler-core"))
     implementation(project(":compiler-sass"))
     implementation(project(":compiler-java"))
+    implementation(project(":compiler-kotlin"))
 }

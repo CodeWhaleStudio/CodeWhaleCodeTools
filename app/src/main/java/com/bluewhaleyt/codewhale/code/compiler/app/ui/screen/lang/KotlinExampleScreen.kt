@@ -10,42 +10,44 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import com.bluewhaleyt.codewhale.code.compiler.app.ROOT_DIR
 import com.bluewhaleyt.codewhale.code.compiler.app.ui.screen.base.CompileScreen
+import com.bluewhaleyt.codewhale.code.compiler.core.ExperimentalCompilerApi
 import com.bluewhaleyt.codewhale.code.compiler.core.Language
 import com.bluewhaleyt.codewhale.code.compiler.core.applyCompileReporter
-import com.bluewhaleyt.codewhale.code.compiler.java.JavaCompilationResult
-import com.bluewhaleyt.codewhale.code.compiler.java.JavaCompileOptions
-import com.bluewhaleyt.codewhale.code.compiler.java.JavaCompiler
 import com.bluewhaleyt.codewhale.code.compiler.java.JavaProject
+import com.bluewhaleyt.codewhale.code.compiler.kotlin.KotlinCompilationResult
+import com.bluewhaleyt.codewhale.code.compiler.kotlin.KotlinCompileOptions
+import com.bluewhaleyt.codewhale.code.compiler.kotlin.KotlinCompiler
+import com.bluewhaleyt.codewhale.code.compiler.kotlin.KotlinProject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 
 @Composable
-fun JavaExampleScreen() {
+fun KotlinExampleScreen() {
     val scope = rememberCoroutineScope()
     var compilationResult by remember {
-        mutableStateOf(JavaCompilationResult())
+        mutableStateOf(KotlinCompilationResult())
     }
     var reporterText by remember { mutableStateOf("") }
-    val compiler = JavaCompiler(
+    val compiler = KotlinCompiler(
         context = LocalContext.current,
         reporter = applyCompileReporter { report ->
             reporterText += "${report.kind}: ${report.message}\n"
         },
-        project = JavaProject(
-            dataDir = File("$ROOT_DIR/java"),
-            projectDir = File("$ROOT_DIR/java/projects/JavaTest"),
+        project = KotlinProject(
+            dataDir = File("$ROOT_DIR/kotlin"),
+            projectDir = File("$ROOT_DIR/kotlin/projects/KotlinTest"),
         ),
-        options = JavaCompileOptions(
-            inputStream = "56".byteInputStream(), // for std input like if Scanner is used
-            sourceVersion = "17",
-            targetVersion = "17",
+        options = KotlinCompileOptions(
+            jvmTarget = "17",
+            languageVersion = "2.1",
+        ).apply {
             generateJar = true
-        )
+        }
     )
     Column {
         CompileScreen(
-            title = "Java Compiler",
+            title = "Kotlin Compiler",
             reporterText = reporterText,
             compilationResult = compilationResult,
             onCompile = {

@@ -13,19 +13,26 @@ import com.bluewhaleyt.codewhale.code.compiler.app.ui.screen.lang.SassExampleScr
 @Composable
 fun MainScreen(navController: NavController) {
     Column {
-        Button(
-            onClick = {
-                navController.navigate("sass_example")
-            }
-        ) {
-            Text(text = "Sass compiler")
+        CompilerButton(text = "Sass compiler") {
+            navController.navigate("sass_example")
         }
-        Button(
-            onClick = {
-                navController.navigate("java_example")
-            }
-        ) {
-            Text(text = "Java compiler")
+        CompilerButton(text = "Java compiler") {
+            navController.navigate("java_example")
         }
+        CompilerButton(text = "Kotlin compiler") {
+            navController.navigate("kotlin_example")
+        }
+    }
+}
+
+@Composable
+private fun CompilerButton(
+    text: String,
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = onClick
+    ) {
+        Text(text = text)
     }
 }

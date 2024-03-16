@@ -1,5 +1,10 @@
 package com.bluewhaleyt.codewhale.code.compiler.core
 
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.concurrent.TimeUnit
+
 enum class CompilerReportKind {
     INFO, WARNING, ERROR, LOGGING, OUTPUT
 }
@@ -9,7 +14,7 @@ data class CompileReport(
     val message: String
 )
 
-class CompileReporter(
+open class CompileReporter(
     val callback: (CompileReport) -> Unit = { report ->
         println("${report.kind}: ${report.message}")
     }
@@ -19,6 +24,7 @@ class CompileReporter(
     var failure = false
         private set
     private var startTime = System.currentTimeMillis()
+//    private var totalTime = 0L
 
     private fun report(kind: CompilerReportKind, message: String) {
         callback(CompileReport(kind, message))
@@ -48,8 +54,24 @@ class CompileReporter(
     fun reportSuccess(message: String) {
         if (failure) return
         val endTime = System.currentTimeMillis()
+//        totalTime += endTime - startTime
+//        reportOutput(message(totalTime))
         reportOutput(message)
         success = true
+    }
+
+    private fun formatTime(timeMillis: Long): String {
+        val hours = TimeUnit.MILLISECONDS.toHours(timeMillis)
+        val minutes = TimeUnit.MILLISECONDS.toMinutes(timeMillis)
+        val pattern = if (hours > 0) {
+            "HH'h'mm'm'ss's'"
+        } else if (minutes > 0) {
+            "m'm'ss's'"
+        } else {
+            "s's'"
+        }
+        return SimpleDateFormat(pattern, Locale.getDefault())
+            .format(Date(timeMillis))
     }
 
 }

@@ -1,29 +1,25 @@
-package com.bluewhaleyt.codewhale.code.compiler.java
+package com.bluewhaleyt.codewhale.code.compiler.kotlin
 
 import android.content.Context
-import android.os.Build
-import com.android.tools.smali.dexlib2.Opcodes
-import com.android.tools.smali.dexlib2.dexbacked.DexBackedDexFile
 import com.bluewhaleyt.codewhale.code.compiler.core.CompilationResult
 import com.bluewhaleyt.codewhale.code.compiler.core.CompileReporter
 import com.bluewhaleyt.codewhale.code.compiler.core.Compiler
+import com.bluewhaleyt.codewhale.code.compiler.core.ExperimentalCompilerApi
+import com.bluewhaleyt.codewhale.code.compiler.java.JavaCompilationResult
+import com.bluewhaleyt.codewhale.code.compiler.java.JavaCompileOptions
+import com.bluewhaleyt.codewhale.code.compiler.java.JavaProject
 import com.bluewhaleyt.codewhale.code.compiler.java.task.D8Task
 import com.bluewhaleyt.codewhale.code.compiler.java.task.JarTask
 import com.bluewhaleyt.codewhale.code.compiler.java.task.JavaCompileTask
 import com.bluewhaleyt.codewhale.code.compiler.java.utils.JavaCompilerUtils
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import java.io.File
-import java.io.OutputStream
-import java.io.PrintStream
-import java.lang.reflect.Modifier
+import com.bluewhaleyt.codewhale.code.compiler.kotlin.task.KotlinCompileTask
 
-class JavaCompiler(
+class KotlinCompiler(
     private val context: Context,
     override val reporter: CompileReporter,
-    val project: JavaProject,
-    val options: JavaCompileOptions
-) : Compiler<JavaCompileOptions>(reporter, options) {
+    val project: KotlinProject,
+    val options: KotlinCompileOptions
+) : Compiler<KotlinCompileOptions>(reporter, options) {
 
     private val utils = JavaCompilerUtils(
         context, reporter, project, options
@@ -33,9 +29,10 @@ class JavaCompiler(
         initializeCache(project)
     }
 
-    override suspend fun compile(): JavaCompilationResult {
-        val compilationResult = JavaCompilationResult()
+    override suspend fun compile(): KotlinCompilationResult {
+        val compilationResult = KotlinCompilationResult()
         try {
+            compileKotlin()
             compileJava()
             compileD8()
             if (options.generateJar) compileJar()
@@ -55,6 +52,10 @@ class JavaCompiler(
         return compilationResult
     }
 
+    private fun compileKotlin() {
+        compileTask<KotlinCompileTask>("Compiling Kotlin...")
+    }
+
     private fun compileJava() {
         compileTask<JavaCompileTask>("Compiling Java...")
     }
@@ -67,8 +68,9 @@ class JavaCompiler(
         compileTask<D8Task>("Converting class files into Dex format...")
     }
 
-    private fun initializeCache(project: JavaProject) {
+    private fun initializeCache(project: KotlinProject) {
         CompilerCache.saveCache(JavaCompileTask(project, options))
+        CompilerCache.saveCache(KotlinCompileTask(project, options))
         CompilerCache.saveCache(D8Task(project, options))
         CompilerCache.saveCache(JarTask(project, options))
     }

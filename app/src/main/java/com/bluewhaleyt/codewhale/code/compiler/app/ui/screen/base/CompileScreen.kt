@@ -54,7 +54,6 @@ fun CompileScreen(
 
     LaunchedEffect(key1 = compilationResult.error) {
         compilationResult.error?.let {
-            delay(1000L)
             selectedTabIndex = 1
             pagerState.animateScrollToPage(1)
         }
