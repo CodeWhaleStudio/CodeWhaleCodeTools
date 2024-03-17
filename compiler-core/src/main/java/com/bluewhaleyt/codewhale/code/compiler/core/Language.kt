@@ -1,7 +1,9 @@
 package com.bluewhaleyt.codewhale.code.compiler.core
 
-enum class Language {
+enum class Language(
+    val hasStandardInput: Boolean = false
+) {
     Sass,
-    Java,
-    Kotlin
+    Java(hasStandardInput = true),
+    Kotlin(hasStandardInput = true)
 }

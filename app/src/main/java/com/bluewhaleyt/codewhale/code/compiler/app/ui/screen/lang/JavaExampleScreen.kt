@@ -1,7 +1,14 @@
 package com.bluewhaleyt.codewhale.code.compiler.app.ui.screen.lang
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,24 +44,30 @@ fun JavaExampleScreen() {
             projectDir = File("$ROOT_DIR/java/projects/JavaTest"),
         ),
         options = JavaCompileOptions(
-            inputStream = "56".byteInputStream(), // for std input like if Scanner is used
             sourceVersion = "17",
             targetVersion = "17",
             generateJar = true
         )
     )
+
+    fun compile() {
+        compilationResult = compiler.compile()
+        if (compilationResult.output?.isNotEmpty() == true) {
+            reporterText += "\n\n${compilationResult.output}"
+        }
+    }
+
     Column {
         CompileScreen(
             title = "Java Compiler",
             reporterText = reporterText,
+            language = Language.Java,
             compilationResult = compilationResult,
-            onCompile = {
+            onCompile = { inputValue ->
                 scope.launch(Dispatchers.IO) {
                     reporterText = ""
-                    compilationResult = compiler.compile()
-                    if (compilationResult.output?.isNotEmpty() == true) {
-                        reporterText += "\n\n${compilationResult.output}"
-                    }
+                    compiler.options.inputStream = inputValue.byteInputStream()
+                    compile()
                 }
             },
         )

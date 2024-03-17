@@ -7,6 +7,7 @@ import com.android.tools.smali.dexlib2.dexbacked.DexBackedDexFile
 import com.bluewhaleyt.codewhale.code.compiler.core.CompilationResult
 import com.bluewhaleyt.codewhale.code.compiler.core.CompileReporter
 import com.bluewhaleyt.codewhale.code.compiler.core.Compiler
+import com.bluewhaleyt.codewhale.code.compiler.core.Language
 import com.bluewhaleyt.codewhale.code.compiler.java.task.D8Task
 import com.bluewhaleyt.codewhale.code.compiler.java.task.JarTask
 import com.bluewhaleyt.codewhale.code.compiler.java.task.JavaCompileTask
@@ -25,6 +26,8 @@ class JavaCompiler(
     val options: JavaCompileOptions
 ) : Compiler<JavaCompileOptions>(reporter, options) {
 
+    val language = Language.Java
+
     private val utils = JavaCompilerUtils(
         context, reporter, project, options
     )
@@ -41,6 +44,7 @@ class JavaCompiler(
             if (options.generateJar) compileJar()
             utils.output = ""
             utils.checkClasses(
+                compilationResult = compilationResult,
                 onOutput = {
                     utils.output = it
                 }

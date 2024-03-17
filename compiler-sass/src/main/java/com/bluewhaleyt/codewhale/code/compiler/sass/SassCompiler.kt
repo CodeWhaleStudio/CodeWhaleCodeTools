@@ -3,6 +3,7 @@ package com.bluewhaleyt.codewhale.code.compiler.sass
 import android.content.Context
 import com.bluewhaleyt.codewhale.code.compiler.core.CompileReporter
 import com.bluewhaleyt.codewhale.code.compiler.core.Compiler
+import com.bluewhaleyt.codewhale.code.compiler.core.Language
 import de.larsgrefer.sass.embedded.SassCompiler
 import de.larsgrefer.sass.embedded.android.AndroidSassCompilerFactory
 
@@ -11,6 +12,8 @@ class SassCompiler(
     override val reporter: CompileReporter,
     val options: SassCompileOptions,
 ) : Compiler<SassCompileOptions>(reporter, options) {
+
+    val language = Language.Sass
 
     private val compiler = AndroidSassCompilerFactory.bundled(context)
 

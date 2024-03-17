@@ -2,6 +2,7 @@ package com.bluewhaleyt.codewhale.code.compiler.app.ui.screen.lang
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,22 +43,28 @@ fun KotlinExampleScreen() {
             jvmTarget = "17",
             languageVersion = "2.1",
         ).apply {
-            inputStream = "56".byteInputStream()
             generateJar = true
         }
     )
+
+    fun compile() {
+        compilationResult = compiler.compile()
+        if (compilationResult.output?.isNotEmpty() == true) {
+            reporterText += "\n\n${compilationResult.output}"
+        }
+    }
+
     Column {
         CompileScreen(
             title = "Kotlin Compiler",
             reporterText = reporterText,
+            language = Language.Kotlin,
             compilationResult = compilationResult,
-            onCompile = {
+            onCompile = { inputValue ->
                 scope.launch(Dispatchers.IO) {
                     reporterText = ""
-                    compilationResult = compiler.compile()
-                    if (compilationResult.output?.isNotEmpty() == true) {
-                        reporterText += "\n\n${compilationResult.output}"
-                    }
+                    compiler.options.inputStream = inputValue.byteInputStream()
+                    compile()
                 }
             },
         )

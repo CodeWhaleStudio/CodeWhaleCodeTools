@@ -5,6 +5,7 @@ import com.bluewhaleyt.codewhale.code.compiler.core.CompilationResult
 import com.bluewhaleyt.codewhale.code.compiler.core.CompileReporter
 import com.bluewhaleyt.codewhale.code.compiler.core.Compiler
 import com.bluewhaleyt.codewhale.code.compiler.core.ExperimentalCompilerApi
+import com.bluewhaleyt.codewhale.code.compiler.core.Language
 import com.bluewhaleyt.codewhale.code.compiler.java.JavaCompilationResult
 import com.bluewhaleyt.codewhale.code.compiler.java.JavaCompileOptions
 import com.bluewhaleyt.codewhale.code.compiler.java.JavaProject
@@ -20,6 +21,8 @@ class KotlinCompiler(
     val project: KotlinProject,
     val options: KotlinCompileOptions
 ) : Compiler<KotlinCompileOptions>(reporter, options) {
+
+    val language = Language.Kotlin
 
     private val utils = JavaCompilerUtils(
         context, reporter, project, options
@@ -38,6 +41,7 @@ class KotlinCompiler(
             if (options.generateJar) compileJar()
             utils.output = ""
             utils.checkClasses(
+                compilationResult = compilationResult,
                 onOutput = {
                     utils.output = it
                 }

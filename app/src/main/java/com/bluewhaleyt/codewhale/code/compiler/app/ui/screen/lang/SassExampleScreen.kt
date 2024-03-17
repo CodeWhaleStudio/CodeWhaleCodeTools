@@ -10,6 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import com.bluewhaleyt.codewhale.code.compiler.app.ROOT_DIR
 import com.bluewhaleyt.codewhale.code.compiler.app.ui.screen.base.CompileScreen
+import com.bluewhaleyt.codewhale.code.compiler.core.Language
 import com.bluewhaleyt.codewhale.code.compiler.core.applyCompileReporter
 import com.bluewhaleyt.codewhale.code.compiler.sass.SassCompilationResult
 import com.bluewhaleyt.codewhale.code.compiler.sass.SassCompiler
@@ -38,6 +39,7 @@ fun SassExampleScreen() {
         CompileScreen(
             title = "Sass Compiler",
             reporterText = reporterText,
+            language = Language.Sass,
             compilationResult = compilationResult,
             onCompile = {
                 scope.launch(Dispatchers.IO) {

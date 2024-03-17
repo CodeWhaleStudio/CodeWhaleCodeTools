@@ -21,6 +21,7 @@ import java.io.File
 import java.io.OutputStream
 import java.io.PrintStream
 import java.lang.reflect.Modifier
+import java.util.Scanner
 
 // basically you won't need to use it
 class JavaCompilerUtils(
@@ -34,6 +35,7 @@ class JavaCompilerUtils(
     var output = ""
 
     fun checkClasses(
+        compilationResult: CompilationResult,
         onOutput: (String) -> Unit
     ) {
         val dex = project.binDir.resolve("classes.dex")
@@ -45,9 +47,7 @@ class JavaCompilerUtils(
         val dexFile = DexBackedDexFile.fromInputStream(
             Opcodes.forApi(33), bis
         )
-//        withContext(Dispatchers.IO) {
-            bis.close()
-//        }
+        bis.close()
         val classes = dexFile.classes.map {
             it.type.substring(1, it.type.length - 1)
         }
@@ -64,12 +64,14 @@ class JavaCompilerUtils(
             ?: classes.firstOrNull { it.endsWith("MainKt") } ?: classes.first()
 
         runClass(
+            compilationResult = compilationResult,
             className = index,
             onOutput = onOutput
         )
     }
 
     private fun runClass(
+        compilationResult: CompilationResult,
         className: String,
         onOutput: (String) -> Unit,
     ) = with(Dispatchers.IO) {
@@ -81,7 +83,10 @@ class JavaCompilerUtils(
         })
         System.setOut(systemOut)
         System.setErr(systemOut)
-        System.setIn(options.inputStream)
+
+        options.inputStream?.let {
+            System.setIn(it)
+        }
 
         val loader = MultipleDexClassLoader(
             classLoader = javaClass.classLoader!!
@@ -118,7 +123,7 @@ class JavaCompilerUtils(
                         System.err.println("Main method is not public or static")
                     }
                 } catch (e: Throwable) {
-                    e.printStackTrace()
+                    compilationResult.error = e
                 }
             } else {
                 System.err.println("No main method found")
