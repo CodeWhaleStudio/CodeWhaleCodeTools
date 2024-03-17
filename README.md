@@ -1,3 +1,6 @@
+[![forthebadge](https://forthebadge.com/images/badges/built-for-android.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/made-with-kotlin.svg)](https://forthebadge.com)
+
 This was originally a part of CodeWhale's project. but the module became very large, so I
 separated it into this repository. This is currently in WIP (Work-In-Progress).
 
