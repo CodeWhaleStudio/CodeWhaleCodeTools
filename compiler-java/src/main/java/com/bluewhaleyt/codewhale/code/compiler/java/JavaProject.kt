@@ -7,9 +7,8 @@ import java.io.File
 
 open class JavaProject(
     open var dataDir: File,
-    override var projectDir: File,
-    override var language: Language = Language.Java
-) : Project(projectDir, language) {
+    override var projectDir: File
+) : Project(projectDir) {
 
 //    val srcDir
 //        get() = when (language) {

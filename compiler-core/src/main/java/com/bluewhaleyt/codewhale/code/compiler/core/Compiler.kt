@@ -9,7 +9,7 @@ abstract class Compiler<T>(
         var compileListener: (Class<*>, BuildStatus) -> Unit = { _, _ -> }
     }
 
-    open suspend fun compile(): CompilationResult? = null
+    open fun compile(): CompilationResult? = null
 
     inline fun <reified T : Task> compileTask(message: String) {
         val task = CompilerCache.getCache<T>()

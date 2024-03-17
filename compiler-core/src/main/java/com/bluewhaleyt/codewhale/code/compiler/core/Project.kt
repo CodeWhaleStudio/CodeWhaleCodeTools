@@ -4,8 +4,7 @@ import java.io.File
 import java.io.Serializable
 
 abstract class Project(
-    open val projectDir: File,
-    open val language: Language
+    open val projectDir: File
 ) : Serializable {
     val name: String
         get() = projectDir.name

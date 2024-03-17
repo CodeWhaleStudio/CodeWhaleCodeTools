@@ -33,7 +33,7 @@ class JavaCompilerUtils(
     var isRunning = false
     var output = ""
 
-    suspend fun checkClasses(
+    fun checkClasses(
         onOutput: (String) -> Unit
     ) {
         val dex = project.binDir.resolve("classes.dex")
@@ -45,9 +45,9 @@ class JavaCompilerUtils(
         val dexFile = DexBackedDexFile.fromInputStream(
             Opcodes.forApi(33), bis
         )
-        withContext(Dispatchers.IO) {
+//        withContext(Dispatchers.IO) {
             bis.close()
-        }
+//        }
         val classes = dexFile.classes.map {
             it.type.substring(1, it.type.length - 1)
         }

@@ -14,7 +14,7 @@ class SassCompiler(
 
     private val compiler = AndroidSassCompilerFactory.bundled(context)
 
-    override suspend fun compile(): SassCompilationResult {
+    override fun compile(): SassCompilationResult {
         val compilationResult = SassCompilationResult()
         try {
             if (options.file.isFile) {

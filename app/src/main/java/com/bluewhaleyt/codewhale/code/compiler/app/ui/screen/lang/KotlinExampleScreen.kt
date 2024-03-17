@@ -42,6 +42,7 @@ fun KotlinExampleScreen() {
             jvmTarget = "17",
             languageVersion = "2.1",
         ).apply {
+            inputStream = "56".byteInputStream()
             generateJar = true
         }
     )

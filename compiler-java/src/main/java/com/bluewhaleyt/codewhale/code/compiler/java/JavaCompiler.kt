@@ -33,7 +33,7 @@ class JavaCompiler(
         initializeCache(project)
     }
 
-    override suspend fun compile(): JavaCompilationResult {
+    override fun compile(): JavaCompilationResult {
         val compilationResult = JavaCompilationResult()
         try {
             compileJava()
@@ -51,7 +51,6 @@ class JavaCompiler(
             compilationResult.error = e
             reporter.reportError("Compilation failed.")
         }
-        reporter.reportOutput(utils.output)
         return compilationResult
     }
 

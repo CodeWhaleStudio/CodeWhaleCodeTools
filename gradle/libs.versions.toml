@@ -21,6 +21,8 @@ androidxComposeCompiler = "1.5.3"
 androidxComposeMaterial3 = "1.2.1"
 androidxComposeAnimation = "1.5.0-beta.1"
 androidxComposeAccompanist = "0.32.0"
+activity = "1.8.0"
+constraintlayout = "2.1.4"
 
 [libraries]
 junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
@@ -51,6 +53,8 @@ androidxComposeUiTooling = { group = "androidx.compose.ui", name = "ui-tooling" 
 androidxComposeUiToolingPreview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidxComposeAccompanistSystemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "androidxComposeAccompanist" }
 androidxComposeAccompanistPagerIndicators = { group = "com.google.accompanist", name = "accompanist-pager-indicators", version.ref = "androidxComposeAccompanist" }
+activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 
 [plugins]
 

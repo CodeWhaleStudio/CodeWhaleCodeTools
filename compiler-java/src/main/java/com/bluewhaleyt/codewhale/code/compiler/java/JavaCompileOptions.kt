@@ -6,11 +6,11 @@ import com.bluewhaleyt.codewhale.code.compiler.core.CompileOptions
 import java.io.InputStream
 
 open class JavaCompileOptions(
-    val sourceVersion: String = "8",
-    val targetVersion: String = sourceVersion,
+    var sourceVersion: String = "8",
+    var targetVersion: String = sourceVersion,
     var generateJar: Boolean = false,
-    val flags: String? = null,
-    val minApiLevel: Int = Build.VERSION_CODES.O,
-    val mode: CompilationMode = CompilationMode.DEBUG,
-    val inputStream: InputStream? = null
+    var flags: String? = null,
+    var minApiLevel: Int = Build.VERSION_CODES.O,
+    var mode: CompilationMode = CompilationMode.DEBUG,
+    var inputStream: InputStream? = null
 ) : CompileOptions()

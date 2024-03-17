@@ -29,7 +29,7 @@ class KotlinCompiler(
         initializeCache(project)
     }
 
-    override suspend fun compile(): KotlinCompilationResult {
+    override fun compile(): KotlinCompilationResult {
         val compilationResult = KotlinCompilationResult()
         try {
             compileKotlin()
@@ -48,7 +48,6 @@ class KotlinCompiler(
             compilationResult.error = e
             reporter.reportError("Compilation failed.")
         }
-        reporter.reportOutput(utils.output)
         return compilationResult
     }
 
