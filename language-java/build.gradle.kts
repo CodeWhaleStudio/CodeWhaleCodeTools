@@ -39,7 +39,7 @@ afterEvaluate {
             create<MavenPublication>("release") {
                 from(components["release"])
                 groupId = "com.github.CodeWhaleStudio"
-                artifactId = "compiler-java"
+                artifactId = "language-java"
                 version = "1.0.0"
             }
         }
