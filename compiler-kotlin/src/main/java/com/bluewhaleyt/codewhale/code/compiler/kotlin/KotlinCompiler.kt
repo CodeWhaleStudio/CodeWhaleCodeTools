@@ -19,7 +19,7 @@ class KotlinCompiler(
     private val context: Context,
     override val reporter: CompileReporter,
     val project: KotlinProject,
-    val options: KotlinCompileOptions
+    val options: KotlinCompileOptions = KotlinCompileOptions()
 ) : Compiler<KotlinCompileOptions>(reporter, options) {
 
     val language = Language.Kotlin
@@ -41,6 +41,7 @@ class KotlinCompiler(
             if (options.generateJar) compileJar()
             utils.output = ""
             utils.checkClasses(
+                className = options.className,
                 compilationResult = compilationResult,
                 onOutput = {
                     utils.output = it

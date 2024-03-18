@@ -12,5 +12,6 @@ open class JavaCompileOptions(
     var flags: String? = null,
     var minApiLevel: Int = Build.VERSION_CODES.O,
     var mode: CompilationMode = CompilationMode.DEBUG,
-    var inputStream: InputStream? = null
+    var inputStream: InputStream? = null,
+    open var className: String = "Main"
 ) : CompileOptions()

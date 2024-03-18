@@ -23,7 +23,7 @@ class JavaCompiler(
     private val context: Context,
     override val reporter: CompileReporter,
     val project: JavaProject,
-    val options: JavaCompileOptions
+    val options: JavaCompileOptions = JavaCompileOptions()
 ) : Compiler<JavaCompileOptions>(reporter, options) {
 
     val language = Language.Java
@@ -44,6 +44,7 @@ class JavaCompiler(
             if (options.generateJar) compileJar()
             utils.output = ""
             utils.checkClasses(
+                className = options.className,
                 compilationResult = compilationResult,
                 onOutput = {
                     utils.output = it

@@ -75,13 +75,9 @@ internal class KotlinCompileTask(
 
     private fun createMessageCollector(reporter: CompileReporter): MessageCollector =
         object : MessageCollector {
-
             private var hasErrors: Boolean = false
-
             override fun clear() {}
-
             override fun hasErrors() = hasErrors
-
             override fun report(
                 severity: CompilerMessageSeverity,
                 message: String,

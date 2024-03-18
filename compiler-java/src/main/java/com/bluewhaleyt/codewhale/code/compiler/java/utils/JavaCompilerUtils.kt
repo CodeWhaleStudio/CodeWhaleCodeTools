@@ -35,6 +35,7 @@ class JavaCompilerUtils(
     var output = ""
 
     fun checkClasses(
+        className: String,
         compilationResult: CompilationResult,
         onOutput: (String) -> Unit
     ) {
@@ -55,17 +56,17 @@ class JavaCompilerUtils(
             reporter.reportError("No classes found")
             return
         }
-        println("Found ${classes.size} classes")
-        println("Available classes:")
-        classes.forEach {
-            println("  $it")
-        }
-        val index = classes.firstOrNull { it.endsWith("Main") }
-            ?: classes.firstOrNull { it.endsWith("MainKt") } ?: classes.first()
+        reporter.reportInfo("Found ${classes.size} classes, compiling $className...")
+//        reporter.reportLogging("Available classes:")
+//        classes.forEach {
+//            reporter.reportLogging("  $it")
+//        }
+//        val index = classes.firstOrNull { it.endsWith("Main") }
+//            ?: classes.firstOrNull { it.endsWith("MainKt") } ?: classes.first()
 
         runClass(
             compilationResult = compilationResult,
-            className = index,
+            className = className,
             onOutput = onOutput
         )
     }

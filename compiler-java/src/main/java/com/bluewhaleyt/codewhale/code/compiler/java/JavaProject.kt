@@ -10,12 +10,6 @@ open class JavaProject(
     override var projectDir: File
 ) : Project(projectDir) {
 
-//    val srcDir
-//        get() = when (language) {
-//            Language.Java -> File(projectDir, "src/main/java")
-//            Language.Kotlin -> File(projectDir, "src/main/kotlin")
-//            else -> throw IllegalStateException("Unsupported language: $language")
-//        }
     open val srcDir
         get() = File(projectDir, "src/main/java")
 

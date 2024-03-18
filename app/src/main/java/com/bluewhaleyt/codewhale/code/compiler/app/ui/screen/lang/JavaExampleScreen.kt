@@ -43,11 +43,6 @@ fun JavaExampleScreen() {
             dataDir = File("$ROOT_DIR/java"),
             projectDir = File("$ROOT_DIR/java/projects/JavaTest"),
         ),
-        options = JavaCompileOptions(
-            sourceVersion = "17",
-            targetVersion = "17",
-            generateJar = true
-        )
     )
 
     fun compile() {
@@ -61,7 +56,7 @@ fun JavaExampleScreen() {
         CompileScreen(
             title = "Java Compiler",
             reporterText = reporterText,
-            language = Language.Java,
+            language = compiler.language,
             compilationResult = compilationResult,
             onCompile = { inputValue ->
                 scope.launch(Dispatchers.IO) {
