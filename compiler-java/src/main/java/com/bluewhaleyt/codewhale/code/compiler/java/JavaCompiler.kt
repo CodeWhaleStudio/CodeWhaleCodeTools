@@ -2,6 +2,7 @@ package com.bluewhaleyt.codewhale.code.compiler.java
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import com.android.tools.smali.dexlib2.Opcodes
 import com.android.tools.smali.dexlib2.dexbacked.DexBackedDexFile
 import com.bluewhaleyt.codewhale.code.compiler.core.CompilationResult
@@ -27,6 +28,7 @@ class JavaCompiler(
 ) : Compiler<JavaCompileOptions>(reporter, options) {
 
     val language = Language.Java
+    private var compilationResult: JavaCompilationResult = JavaCompilationResult()
 
     private val utils = JavaCompilerUtils(
         context, reporter, project, options
@@ -36,20 +38,27 @@ class JavaCompiler(
         initializeCache(project)
     }
 
+    fun checkClasses(): List<String> {
+        compileJava()
+        compileD8()
+        if (options.generateJar) compileJar()
+        utils.output = ""
+        utils.checkClasses(
+            className = options.className,
+            compilationResult = compilationResult,
+            onOutput = {
+                utils.output = it
+            },
+            onClasses = {
+                utils.classes = it
+            }
+        )
+        return utils.classes
+    }
+
     override fun compile(): JavaCompilationResult {
-        val compilationResult = JavaCompilationResult()
         try {
-            compileJava()
-            compileD8()
-            if (options.generateJar) compileJar()
-            utils.output = ""
-            utils.checkClasses(
-                className = options.className,
-                compilationResult = compilationResult,
-                onOutput = {
-                    utils.output = it
-                }
-            )
+            checkClasses()
             compilationResult.output = utils.output
             reporter.reportSuccess("Build completed successfully.")
         } catch (e: Throwable) {

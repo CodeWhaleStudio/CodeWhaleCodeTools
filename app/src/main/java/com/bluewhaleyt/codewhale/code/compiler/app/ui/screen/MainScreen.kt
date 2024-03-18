@@ -22,6 +22,9 @@ fun MainScreen(navController: NavController) {
         CompilerButton(text = "Kotlin compiler") {
             navController.navigate("kotlin_example")
         }
+        CompilerButton(text = "Java new example") {
+            navController.navigate("java_new_example")
+        }
     }
 }
 

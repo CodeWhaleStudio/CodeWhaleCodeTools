@@ -23,6 +23,7 @@ class KotlinCompiler(
 ) : Compiler<KotlinCompileOptions>(reporter, options) {
 
     val language = Language.Kotlin
+    private var compilationResult: KotlinCompilationResult = KotlinCompilationResult()
 
     private val utils = JavaCompilerUtils(
         context, reporter, project, options
@@ -45,6 +46,9 @@ class KotlinCompiler(
                 compilationResult = compilationResult,
                 onOutput = {
                     utils.output = it
+                },
+                onClasses = {
+                    utils.classes = it
                 }
             )
             compilationResult.output = utils.output

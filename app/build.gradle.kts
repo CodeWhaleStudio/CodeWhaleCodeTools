@@ -55,6 +55,7 @@ android {
 dependencies {
     implementation(libs.bundles.core)
     implementation(libs.bundles.compose)
+    implementation(libs.bundles.composeAccompanist)
     testImplementation(libs.bundles.test)
     androidTestImplementation(libs.bundles.test)
     debugImplementation("com.github.CodeWhaleOfficial:CrashWhale:1.0.0")

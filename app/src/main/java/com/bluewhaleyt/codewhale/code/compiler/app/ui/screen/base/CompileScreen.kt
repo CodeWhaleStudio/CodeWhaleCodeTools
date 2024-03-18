@@ -213,7 +213,7 @@ fun CompileScreen(
 }
 
 @Composable
-private fun CodeText(
+internal fun CodeText(
     modifier: Modifier = Modifier,
     text: String?,
     color: Color = LocalContentColor.current

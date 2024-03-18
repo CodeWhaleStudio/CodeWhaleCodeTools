@@ -58,7 +58,7 @@ fun KotlinExampleScreen() {
         CompileScreen(
             title = "Kotlin Compiler",
             reporterText = reporterText,
-            language = Language.Kotlin,
+            language = compiler.language,
             compilationResult = compilationResult,
             onCompile = { inputValue ->
                 scope.launch(Dispatchers.IO) {

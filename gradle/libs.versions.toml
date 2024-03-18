@@ -87,7 +87,7 @@ compose = [
     "androidxLifecycleRuntimeCompose",
     "androidxLifecycleViewModelCompose"
 ]
-compose-accompanist = [
+composeAccompanist = [
     "androidxComposeAccompanistSystemuicontroller",
     "androidxComposeAccompanistPagerIndicators"
 ]

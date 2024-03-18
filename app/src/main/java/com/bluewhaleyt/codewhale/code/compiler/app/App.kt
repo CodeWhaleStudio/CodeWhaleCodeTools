@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.bluewhaleyt.codewhale.code.compiler.app.ui.screen.MainScreen
 import com.bluewhaleyt.codewhale.code.compiler.app.ui.screen.lang.JavaExampleScreen
+import com.bluewhaleyt.codewhale.code.compiler.app.ui.screen.lang.JavaNewExampleScreen
 import com.bluewhaleyt.codewhale.code.compiler.app.ui.screen.lang.KotlinExampleScreen
 import com.bluewhaleyt.codewhale.code.compiler.app.ui.screen.lang.SassExampleScreen
 
@@ -35,6 +36,9 @@ fun App() {
             }
             composable("kotlin_example") {
                 KotlinExampleScreen()
+            }
+            composable("java_new_example") {
+                JavaNewExampleScreen()
             }
         }
     }

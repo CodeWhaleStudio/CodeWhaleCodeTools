@@ -39,7 +39,7 @@ fun SassExampleScreen() {
         CompileScreen(
             title = "Sass Compiler",
             reporterText = reporterText,
-            language = Language.Sass,
+            language = compiler.language,
             compilationResult = compilationResult,
             onCompile = {
                 scope.launch(Dispatchers.IO) {

@@ -33,11 +33,13 @@ class JavaCompilerUtils(
 
     var isRunning = false
     var output = ""
+    var classes: List<String> = emptyList()
 
     fun checkClasses(
         className: String,
         compilationResult: CompilationResult,
-        onOutput: (String) -> Unit
+        onOutput: (String) -> Unit,
+        onClasses: (List<String>) -> Unit
     ) {
         val dex = project.binDir.resolve("classes.dex")
         if (!dex.exists()) {
@@ -63,6 +65,8 @@ class JavaCompilerUtils(
 //        }
 //        val index = classes.firstOrNull { it.endsWith("Main") }
 //            ?: classes.firstOrNull { it.endsWith("MainKt") } ?: classes.first()
+
+        onClasses(classes)
 
         runClass(
             compilationResult = compilationResult,
