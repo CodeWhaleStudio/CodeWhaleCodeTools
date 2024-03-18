@@ -11,10 +11,10 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/app2" />
-            <option value="$PROJECT_DIR$/compiler-core" />
-            <option value="$PROJECT_DIR$/compiler-java" />
-            <option value="$PROJECT_DIR$/compiler-kotlin" />
-            <option value="$PROJECT_DIR$/compiler-sass" />
+            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/language-java" />
+            <option value="$PROJECT_DIR$/language-kotlin" />
+            <option value="$PROJECT_DIR$/language-sass" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

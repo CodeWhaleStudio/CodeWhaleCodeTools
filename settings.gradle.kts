@@ -21,10 +21,10 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "CodeWhaleCodeCompiler"
+rootProject.name = "CodeWhaleCodeTools"
 include(":app")
-include(":compiler-sass")
-include(":compiler-core")
-include(":compiler-java")
-include(":compiler-kotlin")
+include(":language-sass")
+include(":core")
+include(":language-java")
+include(":language-kotlin")
 include(":app2")
