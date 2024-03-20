@@ -1,7 +1,7 @@
 package com.bluewhaleyt.codewhale.code.language.kotlin
 
 import com.bluewhaleyt.codewhale.code.core.ExperimentalCompilerApi
-import com.bluewhaleyt.codewhale.language.compiler.java.JavaCompileOptions
+import com.bluewhaleyt.codewhale.code.language.java.compiler.JavaCompileOptions
 
 @OptIn(ExperimentalCompilerApi::class)
 data class KotlinCompileOptions(

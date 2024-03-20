@@ -1,4 +1,4 @@
-package com.bluewhaleyt.codewhale.code.language.kotlin
+package com.bluewhaleyt.codewhale.code.language.java.compiler
 
 import android.content.Context
 import com.bluewhaleyt.codewhale.code.core.compiler.CompileReporter
@@ -10,18 +10,17 @@ import com.bluewhaleyt.codewhale.code.language.java.compiler.task.D8Task
 import com.bluewhaleyt.codewhale.code.language.java.compiler.task.JarTask
 import com.bluewhaleyt.codewhale.code.language.java.compiler.task.JavaCompileTask
 import com.bluewhaleyt.codewhale.code.language.java.compiler.utils.JavaCompilerUtils
-import com.bluewhaleyt.codewhale.code.language.kotlin.task.KotlinCompileTask
 
 @ExperimentalCompilerApi
-class KotlinCompiler(
+class JavaCompiler(
     private val context: Context,
     override val reporter: CompileReporter = CompileReporter(),
-    val project: KotlinProject,
-    val options: KotlinCompileOptions = KotlinCompileOptions()
-) : Compiler<KotlinCompileOptions>(reporter, options) {
+    val project: JavaProject,
+    val options: JavaCompileOptions = JavaCompileOptions()
+) : Compiler<JavaCompileOptions>(reporter, options) {
 
-    val language = Language.Kotlin
-    private var compilationResult: KotlinCompilationResult = KotlinCompilationResult()
+    val language = Language.Java
+    private var compilationResult: JavaCompilationResult = JavaCompilationResult()
 
     private val utils = JavaCompilerUtils(
         context, reporter, project, options
@@ -32,7 +31,6 @@ class KotlinCompiler(
     }
 
     fun listClasses(): List<String> {
-        compileKotlin()
         startCompileJava()
         return utils.classes
     }
@@ -54,7 +52,7 @@ class KotlinCompiler(
         )
     }
 
-    override fun compile(): KotlinCompilationResult {
+    override fun compile(): JavaCompilationResult {
         try {
             listClasses()
             compilationResult.output = utils.output
@@ -64,10 +62,6 @@ class KotlinCompiler(
             reporter.reportError("Compilation failed.")
         }
         return compilationResult
-    }
-
-    private fun compileKotlin() {
-        compileTask<KotlinCompileTask>("Compiling Kotlin...")
     }
 
     private fun compileJava() {
@@ -82,9 +76,8 @@ class KotlinCompiler(
         compileTask<D8Task>("Converting class files into Dex format...")
     }
 
-    private fun initializeCache(project: KotlinProject) {
+    private fun initializeCache(project: JavaProject) {
         CompilerCache.saveCache(JavaCompileTask(project, options))
-        CompilerCache.saveCache(KotlinCompileTask(project, options))
         CompilerCache.saveCache(D8Task(project, options))
         CompilerCache.saveCache(JarTask(project, options))
     }

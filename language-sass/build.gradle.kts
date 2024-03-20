@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.bluewhaleyt.codewhale.code.compiler.sass"
+    namespace = "com.bluewhaleyt.codewhale.code.language.sass"
     compileSdk = 34
 
     defaultConfig {

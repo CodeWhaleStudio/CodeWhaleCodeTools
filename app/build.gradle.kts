@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.bluewhaleyt.codewhale.code.tool.app"
+    namespace = "com.bluewhaleyt.codewhale.code.app"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.bluewhaleyt.codewhale.code.tool.app"
+        applicationId = "com.bluewhaleyt.codewhale.code.app"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

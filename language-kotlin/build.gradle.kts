@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.bluewhaleyt.codewhale.code.compiler.kotlin"
+    namespace = "com.bluewhaleyt.codewhale.code.language.kotlin"
     compileSdk = 34
 
     defaultConfig {

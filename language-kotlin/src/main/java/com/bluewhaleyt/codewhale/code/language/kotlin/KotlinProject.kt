@@ -1,7 +1,7 @@
 package com.bluewhaleyt.codewhale.code.language.kotlin
 
 import com.bluewhaleyt.codewhale.code.core.ExperimentalCompilerApi
-import com.bluewhaleyt.codewhale.language.compiler.java.JavaProject
+import com.bluewhaleyt.codewhale.code.language.java.compiler.JavaProject
 import java.io.File
 
 @ExperimentalCompilerApi
