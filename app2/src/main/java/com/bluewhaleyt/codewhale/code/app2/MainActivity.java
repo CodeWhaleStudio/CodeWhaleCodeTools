@@ -14,9 +14,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.bluewhaleyt.codewhale.code.compiler.app2.R;
 import com.bluewhaleyt.codewhale.code.core.compiler.CompileReporter;
-import com.bluewhaleyt.codewhale.code.core.ExperimentalCompilerApi;
 import com.bluewhaleyt.codewhale.code.language.java.compiler.JavaCompileOptions;
 import com.bluewhaleyt.codewhale.code.language.java.compiler.JavaCompiler;
 import com.bluewhaleyt.codewhale.code.language.java.compiler.JavaProject;
@@ -25,7 +23,6 @@ import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
-    @ExperimentalCompilerApi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
