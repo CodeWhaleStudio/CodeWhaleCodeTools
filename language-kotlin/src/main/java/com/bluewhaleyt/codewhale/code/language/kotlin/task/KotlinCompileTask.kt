@@ -1,7 +1,6 @@
 package com.bluewhaleyt.codewhale.code.language.kotlin.task
 
 import com.bluewhaleyt.codewhale.code.core.compiler.CompileReporter
-import com.bluewhaleyt.codewhale.code.core.ExperimentalCompilerApi
 import com.bluewhaleyt.codewhale.code.core.Task
 import com.bluewhaleyt.codewhale.code.language.kotlin.KotlinCompileOptions
 import com.bluewhaleyt.codewhale.code.language.kotlin.KotlinProject
@@ -13,7 +12,6 @@ import org.jetbrains.kotlin.incremental.isJavaFile
 import org.jetbrains.kotlin.incremental.makeJvmIncrementally
 import java.io.File
 
-@OptIn(ExperimentalCompilerApi::class)
 internal class KotlinCompileTask constructor(
     val project: KotlinProject,
     val options: KotlinCompileOptions

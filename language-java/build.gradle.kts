@@ -50,12 +50,18 @@ dependencies {
     implementation(libs.bundles.core)
     implementation(project(":core"))
 
+    compileOnly("com.android.tools:r8:8.2.47")
     api("io.github.itsaky:nb-javac-android:17.0.0.3")
     implementation("com.google.guava:guava:33.0.0-jre")
     implementation("com.squareup:javapoet:1.13.0")
     implementation("org.javassist:javassist:3.29.2-GA")
     implementation("com.android.tools.smali:smali-dexlib2:3.0.5")
-    compileOnly("com.android.tools:r8:8.2.47")
+    implementation("com.github.javaparser:javaparser-core:3.25.8")
+    implementation("com.github.javaparser:javaparser-symbol-solver-core:3.25.8") {
+        exclude(group = "com.google.guava", module = "guava")
+    }
+
+    implementation("com.github.Cosmic-Ide.kotlinc-android:kotlinc:2a0a6a7291")
 
     implementation(platform("io.github.Rosemoe.sora-editor:bom:0.23.4"))
     implementation("io.github.Rosemoe.sora-editor:editor")

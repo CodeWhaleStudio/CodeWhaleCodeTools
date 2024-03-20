@@ -6,7 +6,6 @@ import com.android.tools.smali.dexlib2.Opcodes
 import com.android.tools.smali.dexlib2.dexbacked.DexBackedDexFile
 import com.bluewhaleyt.codewhale.code.core.compiler.CompilationResult
 import com.bluewhaleyt.codewhale.code.core.compiler.CompileReporter
-import com.bluewhaleyt.codewhale.code.core.ExperimentalCompilerApi
 import com.bluewhaleyt.codewhale.code.language.java.compiler.JavaCompileOptions
 import com.bluewhaleyt.codewhale.code.language.java.compiler.JavaProject
 import com.bluewhaleyt.codewhale.code.language.java.compiler.MultipleDexClassLoader
@@ -17,7 +16,6 @@ import java.io.PrintStream
 import java.lang.reflect.Modifier
 
 // basically you won't need to use it
-@OptIn(ExperimentalCompilerApi::class)
 class JavaCompilerUtils(
     val context: Context,
     val reporter: CompileReporter,

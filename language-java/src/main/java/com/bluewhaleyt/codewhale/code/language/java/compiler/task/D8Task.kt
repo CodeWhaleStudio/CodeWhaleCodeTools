@@ -4,12 +4,10 @@ import com.android.tools.r8.D8
 import com.android.tools.r8.D8Command
 import com.android.tools.r8.OutputMode
 import com.bluewhaleyt.codewhale.code.core.compiler.CompileReporter
-import com.bluewhaleyt.codewhale.code.core.ExperimentalCompilerApi
 import com.bluewhaleyt.codewhale.code.core.Task
 import com.bluewhaleyt.codewhale.code.language.java.compiler.JavaCompileOptions
 import com.bluewhaleyt.codewhale.code.language.java.compiler.JavaProject
 
-@OptIn(ExperimentalCompilerApi::class)
 class D8Task(
     val project: JavaProject,
     val options: JavaCompileOptions

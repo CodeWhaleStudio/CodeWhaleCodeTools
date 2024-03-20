@@ -4,7 +4,6 @@ import android.content.Context
 import com.bluewhaleyt.codewhale.code.core.compiler.CompileReporter
 import com.bluewhaleyt.codewhale.code.core.compiler.Compiler
 import com.bluewhaleyt.codewhale.code.core.compiler.CompilerCache
-import com.bluewhaleyt.codewhale.code.core.ExperimentalCompilerApi
 import com.bluewhaleyt.codewhale.code.core.Language
 import com.bluewhaleyt.codewhale.code.language.java.compiler.task.D8Task
 import com.bluewhaleyt.codewhale.code.language.java.compiler.task.JarTask
@@ -12,7 +11,6 @@ import com.bluewhaleyt.codewhale.code.language.java.compiler.task.JavaCompileTas
 import com.bluewhaleyt.codewhale.code.language.java.compiler.utils.JavaCompilerUtils
 import com.bluewhaleyt.codewhale.code.language.kotlin.task.KotlinCompileTask
 
-@ExperimentalCompilerApi
 class KotlinCompiler(
     private val context: Context,
     override val reporter: CompileReporter = CompileReporter(),

@@ -1,11 +1,8 @@
 package com.bluewhaleyt.codewhale.code.language.kotlin
 
-import com.bluewhaleyt.codewhale.code.core.ExperimentalCompilerApi
 import com.bluewhaleyt.codewhale.code.language.java.compiler.JavaProject
 import java.io.File
 
-@ExperimentalCompilerApi
-@OptIn(ExperimentalCompilerApi::class)
 data class KotlinProject(
     override var rootDir: File,
     override var projectDir: File,

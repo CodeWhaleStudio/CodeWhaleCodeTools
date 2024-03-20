@@ -1,7 +1,6 @@
 package com.bluewhaleyt.codewhale.code.language.java.compiler.task
 
 import com.bluewhaleyt.codewhale.code.core.compiler.CompileReporter
-import com.bluewhaleyt.codewhale.code.core.ExperimentalCompilerApi
 import com.bluewhaleyt.codewhale.code.core.Task
 import com.bluewhaleyt.codewhale.code.language.java.compiler.JavaCompileOptions
 import com.bluewhaleyt.codewhale.code.language.java.compiler.JavaProject
@@ -9,7 +8,6 @@ import java.io.File
 import java.util.jar.JarOutputStream
 import java.util.zip.ZipEntry
 
-@OptIn(ExperimentalCompilerApi::class)
 class JarTask(
     val project: JavaProject,
     val options: JavaCompileOptions

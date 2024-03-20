@@ -4,13 +4,13 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.PlayArrow
+import androidx.compose.material3.Button
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -29,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.bluewhaleyt.codewhale.code.app.ui.component.CodeEditor
 import com.bluewhaleyt.codewhale.code.app.ui.component.CodeEditorState
-import com.bluewhaleyt.codewhale.code.core.ExperimentalCompilerApi
 import io.github.rosemoe.sora.text.Content
 import io.github.rosemoe.sora.widget.CodeEditor
 import kotlinx.coroutines.CoroutineScope
@@ -44,7 +43,8 @@ fun CompileScreen(
     reporterText: String,
     output: String?,
     onCompile: suspend CoroutineScope.() -> Unit,
-    onEditorInitialize: ((CodeEditor) -> Unit)? = null
+    onEditorInitialize: ((CodeEditor) -> Unit)? = null,
+    content: @Composable (() -> Unit)? = null
 ) {
     val scope = rememberCoroutineScope()
     var selectedTabIndex by remember { mutableIntStateOf(0) }
@@ -112,7 +112,6 @@ fun CompileScreen(
     }
 }
 
-@OptIn(ExperimentalCompilerApi::class)
 @Composable
 private fun TabPage1(
     file: File?,

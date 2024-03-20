@@ -3,10 +3,8 @@ package com.bluewhaleyt.codewhale.code.language.java.compiler
 import android.os.Build
 import com.android.tools.r8.CompilationMode
 import com.bluewhaleyt.codewhale.code.core.compiler.CompileOptions
-import com.bluewhaleyt.codewhale.code.core.ExperimentalCompilerApi
 import java.io.InputStream
 
-@ExperimentalCompilerApi
 open class JavaCompileOptions(
     var sourceVersion: String = "8",
     var targetVersion: String = sourceVersion,

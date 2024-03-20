@@ -1,11 +1,15 @@
 package com.bluewhaleyt.codewhale.code.core
 
 enum class Language(
+    val fileExtensions: Array<String>,
     val keywords: Array<String> = emptyArray<String>(),
     val hasStandardInput: Boolean = false
 ) {
-    Sass,
+    Sass(
+        fileExtensions = arrayOf("sass", "scss", "css")
+    ),
     Java(
+        fileExtensions = arrayOf("jav", "java"),
         keywords = arrayOf(
             "abstract", "assert", "boolean", "break", "byte", "case", "catch", "char", "class",
             "const", "continue", "default", "do", "double", "else", "enum", "extends", "final",
@@ -16,5 +20,8 @@ enum class Language(
         ),
         hasStandardInput = true
     ),
-    Kotlin(hasStandardInput = true)
+    Kotlin(
+        fileExtensions = arrayOf("kt"),
+        hasStandardInput = true
+    )
 }

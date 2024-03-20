@@ -1,7 +1,6 @@
 package com.bluewhaleyt.codewhale.code.language.java.compiler.task
 
 import com.bluewhaleyt.codewhale.code.core.compiler.CompileReporter
-import com.bluewhaleyt.codewhale.code.core.ExperimentalCompilerApi
 import com.bluewhaleyt.codewhale.code.core.Task
 import com.bluewhaleyt.codewhale.code.language.java.compiler.JavaCompileOptions
 import com.bluewhaleyt.codewhale.code.language.java.compiler.JavaProject
@@ -15,7 +14,6 @@ import javax.tools.JavaFileObject
 import javax.tools.SimpleJavaFileObject
 import javax.tools.StandardLocation
 
-@OptIn(ExperimentalCompilerApi::class)
 class JavaCompileTask(
     val project: JavaProject,
     val options: JavaCompileOptions

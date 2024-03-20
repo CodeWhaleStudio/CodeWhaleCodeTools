@@ -4,14 +4,12 @@ import android.content.Context
 import com.bluewhaleyt.codewhale.code.core.compiler.CompileReporter
 import com.bluewhaleyt.codewhale.code.core.compiler.Compiler
 import com.bluewhaleyt.codewhale.code.core.compiler.CompilerCache
-import com.bluewhaleyt.codewhale.code.core.ExperimentalCompilerApi
 import com.bluewhaleyt.codewhale.code.core.Language
 import com.bluewhaleyt.codewhale.code.language.java.compiler.task.D8Task
 import com.bluewhaleyt.codewhale.code.language.java.compiler.task.JarTask
 import com.bluewhaleyt.codewhale.code.language.java.compiler.task.JavaCompileTask
 import com.bluewhaleyt.codewhale.code.language.java.compiler.utils.JavaCompilerUtils
 
-@ExperimentalCompilerApi
 class JavaCompiler(
     private val context: Context,
     override val reporter: CompileReporter = CompileReporter(),

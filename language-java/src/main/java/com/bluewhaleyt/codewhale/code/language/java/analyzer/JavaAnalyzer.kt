@@ -1,13 +1,13 @@
 package com.bluewhaleyt.codewhale.code.language.java.analyzer
 
 import com.bluewhaleyt.codewhale.code.core.analyzer.Analyzer
-import com.bluewhaleyt.codewhale.code.core.ExperimentalCompilerApi
 import com.bluewhaleyt.codewhale.code.language.java.compiler.JavaCompileOptions
 import com.bluewhaleyt.codewhale.code.language.java.compiler.JavaProject
 import com.sun.tools.javac.api.JavacTool
 import com.sun.tools.javac.file.JavacFileManager
 import io.github.rosemoe.sora.lang.diagnostic.DiagnosticDetail
 import io.github.rosemoe.sora.lang.diagnostic.DiagnosticRegion
+import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import java.io.File
 import java.nio.charset.Charset
 import java.util.Locale
@@ -16,7 +16,6 @@ import javax.tools.DiagnosticCollector
 import javax.tools.JavaFileObject
 import javax.tools.StandardLocation
 
-@ExperimentalCompilerApi
 class JavaAnalyzer(
     val project: JavaProject,
     val file: File?,

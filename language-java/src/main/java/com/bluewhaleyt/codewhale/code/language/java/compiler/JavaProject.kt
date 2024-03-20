@@ -1,10 +1,8 @@
 package com.bluewhaleyt.codewhale.code.language.java.compiler
 
-import com.bluewhaleyt.codewhale.code.core.ExperimentalCompilerApi
 import com.bluewhaleyt.codewhale.code.core.Project
 import java.io.File
 
-@ExperimentalCompilerApi
 open class JavaProject(
     open var rootDir: File,
     override var projectDir: File
