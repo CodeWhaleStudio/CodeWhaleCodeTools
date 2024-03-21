@@ -1,11 +1,22 @@
 package com.bluewhaleyt.codewhale.code.app.ui.screen.lang
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -14,22 +25,23 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.bluewhaleyt.codewhale.code.app.ROOT_DIR
-import com.bluewhaleyt.codewhale.code.app.ui.screen.base.CompileScreen
 import com.bluewhaleyt.codewhale.code.core.compiler.createCompileReporter
 import com.bluewhaleyt.codewhale.code.language.java.analyzer.JavaAnalyzer
 import com.bluewhaleyt.codewhale.code.language.java.codenavigation.JavaCodeNavigation
-import com.bluewhaleyt.codewhale.code.language.java.codenavigation.JavaCodeNavigationItem
+import com.bluewhaleyt.codewhale.code.language.java.codenavigation.JavaCodeNavigationSymbol
+import com.bluewhaleyt.codewhale.code.language.java.codenavigation.JavaCodeNavigationSymbolKind
 import com.bluewhaleyt.codewhale.code.language.java.compiler.JavaCompilationResult
 import com.bluewhaleyt.codewhale.code.language.java.compiler.JavaCompiler
 import com.bluewhaleyt.codewhale.code.language.java.compiler.JavaProject
-import io.github.rosemoe.sora.langs.java.JavaLanguage
-import io.github.rosemoe.sora.widget.CodeEditor
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -58,41 +70,132 @@ fun JavaExampleScreen() {
     )
     var compilationResult by remember { mutableStateOf(JavaCompilationResult()) }
     Column {
-//        var symbols by remember { mutableStateOf(emptyList<JavaCodeNavigationItem>()) }
+        var symbols by remember { mutableStateOf(emptyList<JavaCodeNavigationSymbol>()) }
+        val scope = rememberCoroutineScope()
 
-//        var editorState by remember { mutableStateOf<CodeEditor?>(null) }
-//
-//        AnimatedVisibility(visible = codeNavigation.getSymbols().isNotEmpty()) {
-//            LazyColumn {
-//                itemsIndexed(symbols) { index, item ->
-//                    Column(
-//                        modifier = Modifier.padding(16.dp)
-//                    ){
-//                        Column(
-//                            modifier = Modifier.padding(start = item.depth.dp * 30)
-//                        ) {
-//                            val pos = editorState?.text?.indexer?.getCharPosition(item.startPosition)
-//                            val lineNumber = pos?.line?.plus(1)
-//                            val columnNumber = pos?.column?.plus(1)
-//                            Text(text = item.name)
-//                            Text(text = "${item.modifier} ($lineNumber:$columnNumber)")
-//                        }
-//                    }
-//                }
-//            }
-//        }
-
-        CompileScreen(
-            file = file,
-            reporterText = reporterText,
-            output = compilationResult.output,
-            onCompile = {
-                reporterText = ""
-                compilationResult = compiler.compile()
-            },
-            onEditorInitialize = {
-                it.setEditorLanguage(JavaLanguage())
+        LaunchedEffect(key1 = Unit) {
+            scope.launch {
+                symbols = codeNavigation.getSymbols()
             }
-        )
+        }
+
+        AnimatedVisibility(visible = symbols.isNotEmpty()) {
+            LazyColumn {
+                itemsIndexed(symbols) { index, symbol ->
+                    val indentPadding = symbol.depth.dp * 30
+                    Row(
+                        modifier = Modifier
+                            .clip(MaterialTheme.shapes.medium)
+                            .fillMaxWidth()
+                            .padding(start = indentPadding)
+                            .padding(
+                                horizontal = 16.dp,
+                                vertical = 8.dp
+                            ),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Card(
+                            colors = CardDefaults.cardColors(
+                                containerColor = Color.Transparent,
+                                contentColor = MaterialTheme.colorScheme.primary
+                            ),
+                            border = BorderStroke(
+                                color = MaterialTheme.colorScheme.primary,
+                                width = 1.dp
+                            ),
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .size(18.dp),
+                            shape = CircleShape,
+                        ) {
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                            ) {
+                                Text(
+                                    text = symbol.kind.name.first().toString(),
+                                    fontSize = 14.sp,
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Column(
+                            modifier = Modifier
+                                .weight(1f),
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Row {
+                                symbol.name?.let {
+                                    Text(
+                                        text = it,
+                                        fontSize = 14.sp,
+                                        fontFamily = FontFamily.Monospace,
+                                    )
+                                }
+                                when (symbol.kind) {
+                                    JavaCodeNavigationSymbolKind.Class -> {
+                                        symbol.extends?.let {
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                            Text(
+                                                text = "extends ${it.joinToString(", ")}",
+                                                color = MaterialTheme.colorScheme.tertiary,
+                                                fontSize = 14.sp,
+                                                fontFamily = FontFamily.Monospace,
+                                            )
+                                        }
+                                        symbol.implements?.let {
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                            Text(
+                                                text = "implements ${it.joinToString(", ")}",
+                                                color = MaterialTheme.colorScheme.tertiary,
+                                                fontSize = 14.sp,
+                                                fontFamily = FontFamily.Monospace,
+                                            )
+                                        }
+                                    }
+                                    JavaCodeNavigationSymbolKind.Method -> {
+                                        symbol.type?.let {
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                            Text(
+                                                text = ": $it",
+                                                color = MaterialTheme.colorScheme.secondary,
+                                                fontSize = 14.sp,
+                                                fontFamily = FontFamily.Monospace,
+                                            )
+                                        }
+                                    }
+                                    JavaCodeNavigationSymbolKind.Field -> {
+                                        symbol.type?.let {
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                            Text(
+                                                text = ": $it",
+                                                color = MaterialTheme.colorScheme.secondary,
+                                                fontSize = 14.sp,
+                                                fontFamily = FontFamily.Monospace,
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+//        CompileScreen(
+//            file = file,
+//            reporterText = reporterText,
+//            output = compilationResult.output,
+//            onCompile = {
+//                reporterText = ""
+//                compilationResult = compiler.compile()
+//            },
+//            onEditorInitialize = {
+//                it.setEditorLanguage(JavaLanguage())
+//            }
+//        )
     }
 }

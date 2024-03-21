@@ -8,6 +8,7 @@ import com.intellij.openapi.extensions.ExtensionPoint
 import com.intellij.openapi.extensions.Extensions
 import com.intellij.openapi.extensions.impl.ExtensionsAreaImpl
 import com.intellij.openapi.vfs.impl.VirtualFileManagerImpl
+import com.intellij.psi.JavaModuleSystem
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElementFactory
 import com.intellij.psi.PsiElementFinder
@@ -36,8 +37,8 @@ class JavaCodeNavigation(
         registerExtensions(env.project.extensionArea)
     }
 
-    fun getSymbols(): List<JavaCodeNavigationItem> {
-        var symbols = mutableListOf<JavaCodeNavigationItem>()
+    fun getSymbols(): List<JavaCodeNavigationSymbol> {
+        var symbols = mutableListOf<JavaCodeNavigationSymbol>()
         val psiJavaFile = psiFileFactory.createFileFromText(
             file?.name.toString(),
             JavaLanguage.INSTANCE,
@@ -56,102 +57,81 @@ class JavaCodeNavigation(
     private fun extract(
         psiClass: PsiClass,
         depth: Int = 0
-    ): List<JavaCodeNavigationItem> {
+    ): List<JavaCodeNavigationSymbol> {
         var depth = depth
-        val navigationItems = mutableListOf<JavaCodeNavigationItem>()
-        val name = buildString {
-            append(psiClass.name)
-            if (psiClass.superClass != null) {
-                append(" : ")
-                append(psiClass.superClass?.name)
-            }
-            if (psiClass.implementsList != null && psiClass.implementsList!!.referenceElements.isNotEmpty()) {
-                append(" implements ")
-                append(psiClass.implementsList?.referenceElements?.joinToString(", ") { it.text })
-            }
-        }
-        val item = JavaCodeNavigationItem(
-            name = name,
-            modifier = psiClass.modifierList!!.text,
-            startPosition = psiClass.textOffset,
-            endPosition = psiClass.textOffset + psiClass.textLength,
-            kind = JavaCodeNavigationItemKind.Class,
-            depth = depth
-        )
+        val navigationItems = mutableListOf<JavaCodeNavigationSymbol>()
+        val item = extractClass(psiClass, depth)
         if (depth == 0) navigationItems.add(item)
         depth++
         psiClass.children.forEachIndexed { index, child ->
             when (child) {
                 is PsiMethod -> {
-                    val modifiers = child.modifierList
-                    val parameters = child.parameterList
-                    val returnType = child.returnTypeElement?.text ?: "void"
-
-                    val methodName = child.name + "(" + parameters.parameters.joinToString(", ") {
-                        it.typeElement?.text ?: "void"
-                    } + ") : $returnType"
-
                     val startPosition = child.textOffset
                     val endPosition = startPosition + child.textLength
 
-                    val item = JavaCodeNavigationItem(
-                        name = methodName,
-                        modifier = modifiers.text,
-                        startPosition = startPosition,
+                    val item = JavaCodeNavigationSymbol(
+                        name = child.name,
+                        modifiers = child.modifierList.text,
+                        kind = JavaCodeNavigationSymbolKind.Method,
+                        startPosition = child.textOffset,
                         endPosition = endPosition,
-                        kind = JavaCodeNavigationItemKind.Method,
+                        javadocComment = child.docComment?.text,
+                        type = child.returnTypeElement?.text ?: "void",
+                        parameters = child.parameterList.parameters.map { it.text },
                         depth = depth
                     )
                     navigationItems.add(item)
                 }
                 is PsiField -> {
-                    val modifiers = child.modifierList ?: return@forEachIndexed
                     val startPosition = child.textOffset
-                    val type = child.typeElement?.text ?: "void"
-                    val fieldName = child.name + " : $type"
+                    val endPosition = startPosition + child.textLength
 
-                    val item = JavaCodeNavigationItem(
-                        name = fieldName,
-                        modifier = modifiers.text,
+                    val item = JavaCodeNavigationSymbol(
+                        name = child.name,
+                        modifiers = child.modifierList?.text,
+                        kind = JavaCodeNavigationSymbolKind.Field,
                         startPosition = startPosition,
-                        endPosition = startPosition + name.length,
-                        kind = JavaCodeNavigationItemKind.Field,
+                        endPosition = endPosition,
+                        javadocComment = child.docComment?.text,
+                        type = child.typeElement?.text ?: "void",
                         depth = depth
                     )
                     navigationItems.add(item)
                 }
                 is PsiClass -> {
-                    val modifiers = child.modifierList
-                    val innerClassName = buildString {
-                        append(psiClass.name)
-                        if (psiClass.superClass != null) {
-                            append(" : ")
-                            append(psiClass.superClass?.name)
-                        }
-                        if (psiClass.implementsList != null && psiClass.implementsList!!.referenceElements.isNotEmpty()) {
-                            append(" implements ")
-                            append(psiClass.implementsList?.referenceElements?.joinToString(", ") { it.text })
-                        }
-                    }
-                    val startPosition = child.textOffset
-                    val endPosition = startPosition + child.textLength
-
-                    val item = JavaCodeNavigationItem(
-                        name = innerClassName,
-                        modifier = modifiers!!.text,
-                        startPosition = startPosition,
-                        endPosition = endPosition,
-                        kind = JavaCodeNavigationItemKind.Class,
-                        depth = depth
-                    )
+                    val item = extractClass(child, depth)
                     navigationItems.add(item)
                     navigationItems.addAll(
-                        extract(child, depth + 1)
+                        extract(child, depth++)
                     )
                 }
             }
         }
         return navigationItems
+    }
+
+    private fun extractClass(
+        psiClass: PsiClass,
+        depth: Int
+    ): JavaCodeNavigationSymbol {
+        val item = JavaCodeNavigationSymbol(
+            kind = JavaCodeNavigationSymbolKind.Class
+        )
+        if (psiClass.extendsList != null && psiClass.extendsList!!.referenceElements.isNotEmpty()) {
+            item.extends = psiClass.extendsList?.referenceElements?.map { it.text }
+        }
+        if (psiClass.implementsList != null && psiClass.implementsList!!.referenceElements.isNotEmpty()) {
+            item.implements = psiClass.implementsList?.referenceElements?.map { it.text }
+        }
+        item.apply {
+            name = psiClass.name
+            modifiers = psiClass.modifierList?.text
+            startPosition = psiClass.textOffset
+            endPosition = psiClass.textOffset + psiClass.textLength
+            javadocComment = psiClass.docComment?.text
+            this.depth = depth
+        }
+        return item
     }
 
     @Suppress("DEPRECATION")
@@ -203,6 +183,13 @@ class JavaCodeNavigation(
             rootArea.registerExtensionPoint(
                 "com.intellij.psiElementFinder",
                 PsiElementFinder::class.java.name,
+                ExtensionPoint.Kind.INTERFACE
+            )
+        }
+        if (rootArea.hasExtensionPoint("com.intellij.javaModuleSystem").not()) {
+            rootArea.registerExtensionPoint(
+                "com.intellij.javaModuleSystem",
+                JavaModuleSystem::class.java.name,
                 ExtensionPoint.Kind.INTERFACE
             )
         }
