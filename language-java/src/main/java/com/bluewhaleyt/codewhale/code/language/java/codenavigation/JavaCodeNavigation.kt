@@ -10,12 +10,15 @@ import com.intellij.openapi.extensions.impl.ExtensionsAreaImpl
 import com.intellij.openapi.vfs.impl.VirtualFileManagerImpl
 import com.intellij.psi.JavaModuleSystem
 import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiDeclarationStatement
 import com.intellij.psi.PsiElementFactory
 import com.intellij.psi.PsiElementFinder
 import com.intellij.psi.PsiField
 import com.intellij.psi.PsiFileFactory
 import com.intellij.psi.PsiJavaFile
+import com.intellij.psi.PsiLocalVariable
 import com.intellij.psi.PsiMethod
+import com.intellij.psi.PsiVariable
 import com.intellij.psi.augment.PsiAugmentProvider
 import com.intellij.psi.codeStyle.CodeStyleManager
 import com.intellij.psi.impl.source.tree.TreeCopyHandler
@@ -58,35 +61,59 @@ class JavaCodeNavigation(
         psiClass: PsiClass,
         depth: Int = 0
     ): List<JavaCodeNavigationSymbol> {
-        var depth = depth
         val navigationItems = mutableListOf<JavaCodeNavigationSymbol>()
         val item = extractClass(psiClass, depth)
         if (depth == 0) navigationItems.add(item)
-        depth++
-        psiClass.children.forEachIndexed { index, child ->
+
+        psiClass.children.forEach { child ->
             when (child) {
                 is PsiMethod -> {
                     val startPosition = child.textOffset
                     val endPosition = startPosition + child.textLength
 
-                    val item = JavaCodeNavigationSymbol(
+                    val methodItem = JavaCodeNavigationSymbol(
                         name = child.name,
                         modifiers = child.modifierList.text,
                         kind = JavaCodeNavigationSymbolKind.Method,
-                        startPosition = child.textOffset,
+                        startPosition = startPosition,
                         endPosition = endPosition,
                         javadocComment = child.docComment?.text,
                         type = child.returnTypeElement?.text ?: "void",
                         parameters = child.parameterList.parameters.map { it.text },
-                        depth = depth
+                        throws = child.throwsList.referenceElements.map { it.text },
+                        depth = depth + 1
                     )
-                    navigationItems.add(item)
+                    navigationItems.add(methodItem)
+
+                    child.body?.let { methodBody ->
+                        methodBody.children.forEach { statement ->
+                            if (statement is PsiDeclarationStatement) {
+                                statement.declaredElements.forEach { element ->
+                                    if (element is PsiLocalVariable) {
+                                        val variableStartPosition = element.textOffset
+                                        val variableEndPosition = variableStartPosition + element.textLength
+
+                                        val variableItem = JavaCodeNavigationSymbol(
+                                            name = element.name,
+                                            modifiers = element.modifierList?.text,
+                                            kind = JavaCodeNavigationSymbolKind.Variable,
+                                            startPosition = variableStartPosition,
+                                            endPosition = variableEndPosition,
+                                            type = element.typeElement.text ?: "void",
+                                            depth = depth + 2
+                                        )
+                                        navigationItems.add(variableItem)
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
                 is PsiField -> {
                     val startPosition = child.textOffset
                     val endPosition = startPosition + child.textLength
 
-                    val item = JavaCodeNavigationSymbol(
+                    val fieldItem = JavaCodeNavigationSymbol(
                         name = child.name,
                         modifiers = child.modifierList?.text,
                         kind = JavaCodeNavigationSymbolKind.Field,
@@ -94,16 +121,14 @@ class JavaCodeNavigation(
                         endPosition = endPosition,
                         javadocComment = child.docComment?.text,
                         type = child.typeElement?.text ?: "void",
-                        depth = depth
+                        depth = depth + 1
                     )
-                    navigationItems.add(item)
+                    navigationItems.add(fieldItem)
                 }
                 is PsiClass -> {
-                    val item = extractClass(child, depth)
-                    navigationItems.add(item)
-                    navigationItems.addAll(
-                        extract(child, depth++)
-                    )
+                    val childItem = extractClass(child, depth + 1)
+                    navigationItems.add(childItem)
+                    navigationItems.addAll(extract(child, depth + 1))
                 }
             }
         }

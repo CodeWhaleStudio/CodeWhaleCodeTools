@@ -1,7 +1,7 @@
 package com.bluewhaleyt.codewhale.code.language.java.codenavigation
 
 enum class JavaCodeNavigationSymbolKind {
-    Class, Method, Field
+    Class, Method, Field, Variable
 }
 
 data class JavaCodeNavigationSymbol(
@@ -15,6 +15,7 @@ data class JavaCodeNavigationSymbol(
 
     var extends: List<String>? = null,
     var implements: List<String>? = null,
+    var throws: List<String>? = null,
 
     var type: String? = null,
     var parameters: List<String>? = null,

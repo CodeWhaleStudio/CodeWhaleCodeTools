@@ -164,8 +164,17 @@ fun JavaExampleScreen() {
                                                 fontFamily = FontFamily.Monospace,
                                             )
                                         }
+                                        symbol.throws?.let {
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                            Text(
+                                                text = "throws ${it.joinToString(", ")}",
+                                                color = MaterialTheme.colorScheme.primary,
+                                                fontSize = 14.sp,
+                                                fontFamily = FontFamily.Monospace,
+                                            )
+                                        }
                                     }
-                                    JavaCodeNavigationSymbolKind.Field -> {
+                                    else -> {
                                         symbol.type?.let {
                                             Spacer(modifier = Modifier.width(8.dp))
                                             Text(
